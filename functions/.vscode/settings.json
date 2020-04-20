@@ -1,0 +1,17 @@
+{
+    "tslint.alwaysShowStatus": true,
+    "tslint.format.enable": true,
+    "tslint.packageManager": "yarn",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "tslint.probe": ["javascript", "javascriptreact", "typescript", "typescriptreact", "html"],
+    "editor.formatOnSave": false,
+    "[javascript]": {
+      "editor.formatOnSave": true
+    },
+    "[typescript]": {
+      "editor.formatOnSave": true
+    },
+    "[json]": {
+      "editor.formatOnSave": true
+    }
+}
