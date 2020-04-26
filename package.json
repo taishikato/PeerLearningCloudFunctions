@@ -1,0 +1,11 @@
+{
+    "name": "api",
+    "scripts": {
+      "serve": "npm run build && firebase serve --only functions,hosting"
+    },
+    "engines": {
+      "node": "10"
+    },
+    "private": true
+}
+  

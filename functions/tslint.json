@@ -50,7 +50,7 @@
 
     // Functions must either be handled directly (e.g. with a catch() handler) or returned to another function.
     // This is a major source of errors in Cloud Functions and the team strongly recommends leaving this rule on.
-    "no-floating-promises": true,
+    "no-floating-promises": false,
 
     // Do not allow any imports for modules that are not in package.json. These will almost certainly fail when
     // deployed.
@@ -66,7 +66,7 @@
     "no-unsafe-finally": true,
 
     // Expressions must always return a value. Avoids common errors like const myValue = functionReturningVoid();
-    "no-void-expression": [true, "ignore-arrow-function-shorthand"],
+    "no-void-expression": [false, "ignore-arrow-function-shorthand"],
 
     // Disallow duplicate imports in the same file.
     "no-duplicate-imports": true,
