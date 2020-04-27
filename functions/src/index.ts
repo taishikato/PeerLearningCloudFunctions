@@ -12,28 +12,32 @@ export const db: admin.firestore.Firestore = admin.firestore();
  */
 // exports.copyDBCrontab = functions
 //   .region('asia-northeast1')
-//   .pubsub.schedule('15 16 * * *')
-//   .onRun(async context => {
+//   .pubsub.schedule('15 19 * * *')
+//   .onRun(async (context) => {
 //     console.log('INFO: START');
-//     const todosRef = db.collection('todos')
+//     const todosRef = db.collection('todos');
 //     // すべてのpostを取得
-//     const postsData = await db.collection('posts').get()
-//     await Promise.all(postsData.docs.map(async (doc, index) => {
-//       console.log(`INFO: Post${index}件目`)
-//       const post = doc.data()
-//       await Promise.all(post.todos.map(async (todo: any) => {
-//         await todosRef.doc(todo.id).set({
-//           checked: todo.checked,
-//           text: todo.text,
-//           id: todo.id,
-//           userId: post.userId,
-//           created: post.created,
-//           createdDate: post.createdDate,
-//         })
-//       }))
-//     }))
+//     const postsData = await db.collection('posts').get();
+//     await Promise.all(
+//       postsData.docs.map(async (doc, index) => {
+//         console.log(`INFO: Post${index}件目`);
+//         const post = doc.data();
+//         await Promise.all(
+//           post.todos.map(async (todo: any) => {
+//             await todosRef.doc(todo.id).set({
+//               checked: todo.checked,
+//               text: todo.text,
+//               id: todo.id,
+//               userId: post.userId,
+//               created: post.created,
+//               createdDate: post.createdDate,
+//             });
+//           }),
+//         );
+//       }),
+//     );
 //     console.log('INFO: END');
-//   })
+//   });
 
 exports.getTodosApiFunc = functions
   .region('asia-northeast1')

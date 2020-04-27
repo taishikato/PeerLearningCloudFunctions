@@ -6,7 +6,11 @@ import validate from './middlewares/validate';
 
 const app = express();
 
-app.use(cors());
+const corsOptions: cors.CorsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.post('/getTodos', validate, (req, res) => {
   console.log('INFO: Start getTodos');
@@ -33,11 +37,35 @@ app.post('/getTodos', validate, (req, res) => {
         addingTodos[todo.userId].push(todo as ITodo);
       }
     });
+    const todoByUserArray: ITodoByUser[] = [];
+    await Promise.all(
+      Object.keys(addingTodos).map(async (userId) => {
+        const user = await db.collection('users').doc(userId).get();
+        todoByUserArray.push({
+          user: user.data() as IUser,
+          todos: addingTodos[userId],
+        });
+      }),
+    );
     res.status(200);
     console.log('INFO: End getTodos');
-    return res.json({ date: targetDay, todoData: addingTodos });
+    return res.json({ date: targetDay, todoByUser: todoByUserArray });
   })();
 });
+
+interface ITodoByUser {
+  user: IUser;
+  todos: ITodo[];
+}
+
+interface IUser {
+  id: string;
+  picture: string;
+  userName: string;
+  created: number;
+  email: string;
+  displayName: string;
+}
 
 interface ITodo {
   checked: boolean;
