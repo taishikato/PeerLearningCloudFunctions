@@ -12,7 +12,7 @@ export const db: admin.firestore.Firestore = admin.firestore();
  */
 // exports.copyDBCrontab = functions
 //   .region('asia-northeast1')
-//   .pubsub.schedule('15 19 * * *')
+//   .pubsub.schedule('43 10 * * *')
 //   .onRun(async (context) => {
 //     console.log('INFO: START');
 //     const todosRef = db.collection('todos');

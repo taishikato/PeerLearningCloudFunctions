@@ -6,11 +6,7 @@ import validate from './middlewares/validate';
 
 const app = express();
 
-const corsOptions: cors.CorsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.post('/getTodos', validate, (req, res) => {
   console.log('INFO: Start getTodos');
@@ -21,7 +17,8 @@ app.post('/getTodos', validate, (req, res) => {
       .format('YYYYMMDD');
     const todosData = await db
       .collection('todos')
-      .where('createdDate', '==', targetDay)
+      .where('checked', '==', true)
+      .where('doneDate', '==', targetDay)
       .get();
     if (todosData.empty) {
       console.log('INFO: No todo yet');
@@ -32,7 +29,7 @@ app.post('/getTodos', validate, (req, res) => {
     todosData.docs.forEach((doc) => {
       const todo = doc.data();
       if (addingTodos[todo.userId] === undefined) {
-        addingTodos[todo.userId] = [];
+        addingTodos[todo.userId] = [todo as ITodo];
       } else {
         addingTodos[todo.userId].push(todo as ITodo);
       }
@@ -41,8 +38,13 @@ app.post('/getTodos', validate, (req, res) => {
     await Promise.all(
       Object.keys(addingTodos).map(async (userId) => {
         const user = await db.collection('users').doc(userId).get();
+        const userData = user.data() as IUser;
         todoByUserArray.push({
-          user: user.data() as IUser,
+          user: {
+            userName: userData.userName,
+            displayName: userData.displayName,
+            picture: userData.picture,
+          },
           todos: addingTodos[userId],
         });
       }),
@@ -59,11 +61,8 @@ interface ITodoByUser {
 }
 
 interface IUser {
-  id: string;
   picture: string;
   userName: string;
-  created: number;
-  email: string;
   displayName: string;
 }
 
@@ -74,6 +73,7 @@ interface ITodo {
   id: string;
   text: string;
   userId: string;
+  doneDate?: string;
 }
 
 export default app;
